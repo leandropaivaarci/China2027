@@ -570,18 +570,20 @@ function resolverDocs(refs){
     return {bloqueado:true,id};
   });
 }
-/* linha de icones dos documentos, para embutir dentro de um card ja existente */
+/* so os botoes (sem div em volta), para juntar numa linha de icones que ja existe, via acoesEndereco({extra:...}) */
+function docsBotoesHtml(refs){
+  return resolverDocs(refs).filter(item=>!item.bloqueado).map(item=>{
+    const x=item.doc, ic=ICONE_DOC[x.tipo]||'📄';
+    return `<button class="acao" onclick="mostrar(${J(x.numero||x.tipo)},${J(x.tipo)},${J(x.obs||'')})"><span class="em">${ic}</span>${esc(x.tipo)}</button>`;
+  }).join('');
+}
+/* bloco completo (linha de icones propria + aviso de bloqueado), para quando nao ha outra linha de acoes por perto */
 function docsAcoesHtml(refs){
   const lista=resolverDocs(refs);
   if(!lista.length) return '';
-  let h='<div class="acoes">', bloqueado=false;
-  lista.forEach(item=>{
-    if(item.bloqueado){ bloqueado=true; return; }
-    const x=item.doc, ic=ICONE_DOC[x.tipo]||'📄';
-    h+=`<button class="acao" onclick="mostrar(${J(x.numero||x.tipo)},${J(x.tipo)},${J(x.obs||'')})"><span class="em">${ic}</span>${esc(x.tipo)}</button>`;
-  });
-  h+='</div>';
-  if(bloqueado) h+=`<button class="btn gh" style="margin-top:8px" onclick="ir('docs')">🔒 Tem documento protegido, abrir Docs</button>`;
+  const botoes=docsBotoesHtml(refs);
+  let h = botoes?`<div class="acoes">${botoes}</div>`:'';
+  if(lista.some(item=>item.bloqueado)) h+=`<button class="btn gh" style="margin-top:8px" onclick="ir('docs')">🔒 Tem documento protegido, abrir Docs</button>`;
   return h;
 }
 /* card proprio, com titulo, para o topo do dia */
@@ -639,8 +641,7 @@ function vDia(forcado,ehHoje){
         <div class="t">${esc(a.titulo)}</div>
         ${a.local?`<div class="d">${esc(a.local)}${a.local_cn?' · '+esc(a.local_cn):''}</div>`:''}
         ${a.obs?`<div class="d">${esc(a.obs)}</div>`:''}
-        ${termo?acoesEndereco({cn:termo, pt:a.local, cidade:d.cidade, rotulo:'Mostrar'}):''}
-        ${docsAcoesHtml(a.documentos_ref)}
+        ${termo?acoesEndereco({cn:termo, pt:a.local, cidade:d.cidade, rotulo:'Mostrar', extra:docsBotoesHtml(a.documentos_ref)}):docsAcoesHtml(a.documentos_ref)}
         </div></div>`;
     });
     h+='</div>';
@@ -716,8 +717,7 @@ function cardTransporte(t){
     ${t.classe?`<div class="linha"><span class="k">Classe</span><span class="v" style="font-size:12.5px">${esc(t.classe)}</span></div>`:''}
     ${t.operador?`<div class="linha"><span class="k">Operado por</span><span class="v" style="font-size:12.5px">${esc(t.operador)}</span></div>`:''}
     ${t.obs?`<div style="font-size:12.5px;color:var(--cinza);margin-top:9px">${esc(t.obs)}</div>`:''}
-    ${trecho.trim()?acoesEndereco({cn:trecho, pt:t.origem.split(',')[0]+' para '+t.destino.split(',')[0], cidade:t.destino.split(',')[0], rotulo:'Mostrar trecho', amap: naChina(t.origem) && naChina(t.destino)}):''}
-    ${docsAcoesHtml(t.documentos_ref)}
+    ${trecho.trim()?acoesEndereco({cn:trecho, pt:t.origem.split(',')[0]+' para '+t.destino.split(',')[0], cidade:t.destino.split(',')[0], rotulo:'Mostrar trecho', amap: naChina(t.origem) && naChina(t.destino), extra:docsBotoesHtml(t.documentos_ref)}):docsAcoesHtml(t.documentos_ref)}
   </div>`;
 }
 
