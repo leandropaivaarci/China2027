@@ -1,0 +1,5 @@
+# Arquivos que NAO fazem parte do site publicado
+CHINA2027_BACKUP.html
+COMO_PUBLICAR.md
+*.md
+!README.md

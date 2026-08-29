@@ -282,6 +282,14 @@ function toast(msg){
   clearTimeout(t._x); t._x=setTimeout(()=>t.classList.remove('on'),1900);
 }
 
+/* Lugares fora da China. O Amap so cobre a China, entao nesses casos o botao
+   de mapa e o de ficha nao aparecem, para nao oferecer link que nao leva a nada. */
+const FORA_DA_CHINA = ['sao paulo','são paulo','guarulhos','frankfurt','madri','madrid','em transito','em trânsito'];
+function naChina(txt){
+  const t = (txt||'').toLowerCase();
+  return !FORA_DA_CHINA.some(x => t.includes(x));
+}
+
 /* mapa de cidade em portugues para chines, montado a partir dos dias */
 const CIDADE_CN = {};
 D.dias.forEach(d=>{ if(d.cidade && d.cidade_cn) CIDADE_CN[d.cidade]=d.cidade_cn; });
@@ -294,18 +302,24 @@ function idxHoje(){
 
 /* ==================== acoes rapidas ==================== */
 
-/* Amap. Formato oficial da URI API do Amap:
-   busca por palavra-chave em uri.amap.com/search, coordenada nao e obrigatoria.
-   callnative=1 tenta abrir o aplicativo do Amap; sem ele, cai na versao web. */
-function amapUrl(termo, cidadePt){
+/* Amap, formato oficial da URI API.
+   Busca por palavra-chave em uri.amap.com/search. Coordenada NAO e obrigatoria,
+   o que resolve o fato de nao termos coordenadas dos lugares.
+   view=map abre no mapa, view=list abre a ficha do lugar com nome, endereco e avaliacao.
+   callnative=1 tenta abrir o aplicativo do Amap; sem ele, cai na versao web.
+   Dentro do Amap, tocando no resultado, aparece o cartao completo do lugar,
+   com fotos, avaliacoes, telefone e o botao de rota do proprio aplicativo. */
+function amapUrl(termo, cidadePt, modo){
   const cid = CIDADE_CN[cidadePt] || cidadePt || '';
-  let u = 'https://uri.amap.com/search?keyword=' + encodeURIComponent(termo) + '&view=map&callnative=1&src=china2027';
+  let u = 'https://uri.amap.com/search?keyword=' + encodeURIComponent(termo)
+        + '&view=' + (modo === 'ficha' ? 'list' : 'map')
+        + '&callnative=1&src=china2027';
   if(cid) u += '&city=' + encodeURIComponent(cid);
   return u;
 }
-function abrirAmap(termo, cidade){
+function abrirAmap(termo, cidade, modo){
   if(!termo){ toast('Sem endereço para abrir'); return; }
-  window.open(amapUrl(termo, cidade), '_blank');
+  window.open(amapUrl(termo, cidade, modo), '_blank');
 }
 
 async function copiar(txt){
@@ -377,7 +391,9 @@ function acoesEndereco(o){
   const termo = o.cn || o.texto || '';
   let h = '<div class="acoes">';
   h += btnMostrar(termo, o.pt||'', o.tel||'', o.rotulo||'Mostrar grande');
-  if(termo) h += `<button class="acao" onclick="abrirAmap(${J(termo)},${J(o.cidade||'')})"><span class="em">📍</span>Amap</button>`;
+  const podeAmap = termo && o.amap !== false && naChina(o.cidade) && naChina(o.pt);
+  if(podeAmap) h += `<button class="acao" onclick="abrirAmap(${J(termo)},${J(o.cidade||'')},'mapa')"><span class="em">📍</span>Mapa</button>`;
+  if(podeAmap) h += `<button class="acao" onclick="abrirAmap(${J(termo)},${J(o.cidade||'')},'ficha')"><span class="em">ⓘ</span>Ficha do lugar</button>`;
   if(termo) h += `<button class="acao" onclick="copiar(${J(termo)})"><span class="em">⧉</span>Copiar</button>`;
   if(o.tel) h += `<a class="acao" href="tel:${esc(o.tel.replace(/\s/g,''))}"><span class="em">☎</span>Ligar</a>`;
   if(o.pt) h += `<button class="acao" onclick="compartilhar(${J(o.pt)},${J((o.pt||'')+'\n'+termo)})"><span class="em">↗</span>Enviar</button>`;
@@ -650,7 +666,7 @@ function cardTransporte(t){
     ${t.classe?`<div class="linha"><span class="k">Classe</span><span class="v" style="font-size:12.5px">${esc(t.classe)}</span></div>`:''}
     ${t.operador?`<div class="linha"><span class="k">Operado por</span><span class="v" style="font-size:12.5px">${esc(t.operador)}</span></div>`:''}
     ${t.obs?`<div style="font-size:12.5px;color:var(--cinza);margin-top:9px">${esc(t.obs)}</div>`:''}
-    ${trecho.trim()?acoesEndereco({cn:trecho, pt:t.origem.split(',')[0]+' para '+t.destino.split(',')[0], cidade:t.destino.split(',')[0], rotulo:'Mostrar trecho'}):''}
+    ${trecho.trim()?acoesEndereco({cn:trecho, pt:t.origem.split(',')[0]+' para '+t.destino.split(',')[0], cidade:t.destino.split(',')[0], rotulo:'Mostrar trecho', amap: naChina(t.origem) && naChina(t.destino)}):''}
   </div>`;
 }
 
@@ -1025,7 +1041,7 @@ function resBusca(){
 /* ---------- SOBRE ---------- */
 function vSobre(){
   $('#tTitulo').textContent='Sobre';
-  $('#tSub').textContent='Versão 2, 29/08/2026';
+  $('#tSub').textContent='Versão 3, 29/08/2026';
   return `<div class="card">
     <div style="font-size:16px;font-weight:700;color:var(--roxo)">China e Tibete 2026/2027</div>
     <div style="font-size:13.5px;margin-top:8px">Aplicativo offline da família Arci. Depois de aberto
@@ -1042,6 +1058,12 @@ function vSobre(){
   <div class="alerta info"><b>Modo mostrar</b>
     Em qualquer endereço, hotel, trecho ou frase existe o botão de mostrar em tela cheia e o de ouvir.
     Vire o celular para a pessoa, ou toque no alto-falante.</div>
+  <div class="alerta info"><b>Mapa e ficha do lugar</b>
+    O botão Mapa abre a localização no Amap. O botão Ficha do lugar abre o mesmo endereço em modo
+    lista, que é onde o Amap mostra o cartão do local: fotos, avaliação, telefone, horário de
+    funcionamento e o botão de rota do próprio aplicativo. É o equivalente chinês ao painel do
+    Google Maps. Google Maps não funciona na China, e Dianping e Trip.com foram testados e
+    descartados, o primeiro bloqueia link direto e o segundo não abre busca por nome.</div>
   <div class="alerta warn"><b>O que ainda é estimativa</b>
     Preços marcados como "estimado" são premissas, não cotações. O pacote do Tibete não está cotado.
     Horários de voos e trens domésticos ainda não foram comprados.</div>
