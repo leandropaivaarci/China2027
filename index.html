@@ -150,13 +150,13 @@ gap:16px;text-align:center}
 #show .rod .falar{background:var(--laranja3);color:#fff}
 #show .rod .fechar{background:var(--roxo);color:#fff}
 
-/* ---------- barra inferior, tom sobre tom laranja ---------- */
-#barra{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--laranjaEscuro);
+/* ---------- barra inferior, tom sobre tom laranja (cores invertidas) ---------- */
+#barra{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--laranja3);
 display:flex;padding-bottom:env(safe-area-inset-bottom)}
 #barra button{flex:1;height:var(--barra);display:flex;flex-direction:column;align-items:center;
-justify-content:center;gap:3px;color:#ffcfa3;font-size:9.5px;font-weight:700;letter-spacing:.02em}
+justify-content:center;gap:3px;color:var(--laranjaEscuro);font-size:9.5px;font-weight:700;letter-spacing:.02em}
 #barra button .ic{font-size:19px;line-height:1}
-#barra button.on{color:#fff;background:var(--laranja3)}
+#barra button.on{color:#fff;background:var(--laranjaEscuro)}
 
 #menu{position:fixed;inset:0;z-index:90;background:rgba(20,4,38,.55);display:none}
 #menu.on{display:block}
@@ -261,7 +261,7 @@ font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:8
   <button data-t="docs"><span class="ic">▣</span>DOCS</button>
   <button data-t="chines"><span class="ic">中</span>中文</button>
   <button data-t="dinheiro"><span class="ic">¥</span>$$$</button>
-  <button data-t="contatos"><span class="ic">☎</span>CONTATOS</button>
+  <button data-t="contatos"><span class="ic">👤</span>CONTATOS</button>
 </nav>
 
 <script>
@@ -411,7 +411,7 @@ function acoesEndereco(o){
   if(podeAmap) h += `<button class="acao" onclick="abrirAmap(${J(termo)},${J(o.cidade||'')},'ficha')"><span class="em">ⓘ</span>Ficha do lugar</button>`;
   if(termo) h += `<button class="acao" onclick="copiar(${J(termo)})"><span class="em">⧉</span>Copiar</button>`;
   if(o.tel) h += `<a class="acao" href="tel:${esc(o.tel.replace(/\s/g,''))}"><span class="em">☎</span>Ligar</a>`;
-  if(o.pt) h += `<button class="acao" onclick="compartilhar(${J(o.pt)},${J((o.pt||'')+'\n'+termo)})"><span class="em">↗</span>Enviar</button>`;
+  if(o.pt) h += `<button class="acao" onclick="compartilhar(${J(o.pt)},${J((o.pt||'')+'\n'+termo)})"><span class="em" style="display:inline-flex"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg></span>Enviar</button>`;
   if(o.extra) h += o.extra;
   h += '</div>';
   return h;
@@ -1128,6 +1128,16 @@ function vPrat(){
 }
 
 /* ---------- CONTATOS ---------- */
+const SVG_WHATSAPP=`<svg viewBox="0 0 24 24" width="16" height="16"><rect width="24" height="24" rx="6" fill="#25D366"/><path fill="#fff" d="M12.01 3C7.03 3 3 7.03 3 12.01c0 1.77.5 3.42 1.36 4.83L3 21l4.31-1.33A8.96 8.96 0 0 0 12.01 21C16.99 21 21 16.97 21 11.99 21 7.03 16.97 3 12.01 3zm0 16.2c-1.53 0-2.96-.42-4.19-1.15l-.3-.18-3.12.96.98-3.05-.2-.31A7.16 7.16 0 0 1 4.8 12c0-3.98 3.24-7.2 7.21-7.2 3.98 0 7.2 3.23 7.2 7.2 0 3.98-3.23 7.2-7.2 7.2zm3.94-5.4c-.21-.11-1.27-.63-1.47-.7-.2-.07-.34-.11-.49.11-.14.21-.56.7-.69.85-.13.14-.25.16-.47.05-.21-.11-.9-.33-1.71-1.06-.63-.56-1.06-1.26-1.18-1.47-.12-.21-.01-.33.09-.43.1-.1.21-.25.32-.38.11-.13.14-.21.21-.35.07-.14.04-.27-.02-.38-.05-.11-.49-1.18-.67-1.62-.18-.42-.36-.36-.49-.37h-.42c-.14 0-.38.05-.58.27-.2.21-.76.75-.76 1.82 0 1.07.78 2.11.89 2.25.11.14 1.53 2.34 3.72 3.28.52.22.92.36 1.24.46.52.16.99.14 1.36.09.42-.06 1.27-.52 1.45-1.02.18-.5.18-.94.13-1.02-.05-.09-.19-.14-.4-.25z"/></svg>`;
+const SVG_WECHAT=`<svg viewBox="0 0 40 32" width="16" height="16"><ellipse cx="15" cy="13" rx="14" ry="11" fill="#4DBA3B"/><path d="M6 22 L10 19 L14 22 Z" fill="#4DBA3B"/><circle cx="10" cy="11" r="1.8" fill="#fff"/><circle cx="19" cy="11" r="1.8" fill="#fff"/><ellipse cx="27" cy="21" rx="11" ry="9" fill="#8DC63F"/><path d="M35 28 L32 25.5 L29 28 Z" fill="#8DC63F"/><circle cx="23" cy="19.5" r="1.5" fill="#fff"/><circle cx="31" cy="19.5" r="1.5" fill="#fff"/></svg>`;
+/* whatsapp funciona por numero (wa.me); wechat nao tem link publico para abrir
+   conversa por numero, entao o botao so abre o aplicativo (melhor esforco) */
+function botoesMensagem(tel){
+  const digitos=(tel||'').replace(/\D/g,'');
+  if(digitos.length<8) return '';
+  return `<a class="acao" href="https://wa.me/${digitos}" target="_blank" rel="noopener"><span class="em" style="display:inline-flex">${SVG_WHATSAPP}</span>WhatsApp</a>
+    <a class="acao" href="weixin://"><span class="em" style="display:inline-flex">${SVG_WECHAT}</span>WeChat</a>`;
+}
 function vCont(){
   $('#tTitulo').textContent='Contatos';
   $('#tSub').textContent='Emergência, consulado, agência e hotéis';
@@ -1142,7 +1152,8 @@ function vCont(){
         ${c.cidade?`<div style="font-size:12px;color:var(--cinza)">${esc(c.cidade)}</div>`:''}
         ${c.obs?`<div style="font-size:12px;color:var(--cinza);margin-top:4px">${esc(c.obs)}</div>`:''}
         ${falta?'':`<div class="acoes"><a class="acao forte" href="tel:${esc(c.telefone.replace(/\s/g,''))}"><span class="em">☎</span>Ligar</a>
-          <button class="acao" onclick="copiar(${J(c.telefone)})"><span class="em">⧉</span>Copiar</button></div>`}
+          <button class="acao" onclick="copiar(${J(c.telefone)})"><span class="em">⧉</span>Copiar</button>
+          ${botoesMensagem(c.telefone)}</div>`}
       </div>`;
     });
     h+='</div>';
