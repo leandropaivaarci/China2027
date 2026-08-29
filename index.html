@@ -360,7 +360,7 @@ function falar(texto, lang){
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(texto);
     u.lang = lang || 'zh-CN';
-    u.rate = (lang||'zh-CN').startsWith('zh') ? 0.78 : 0.95;
+    u.rate = (lang||'zh-CN').startsWith('zh') ? 0.62 : 0.95;
     const v = VOZES.find(x => x.lang && x.lang.toLowerCase().replace('_','-').startsWith((lang||'zh-CN').toLowerCase()));
     if(v) u.voice = v;
     else if((lang||'zh-CN').startsWith('zh')) toast('Sem voz em chinês instalada neste aparelho');
