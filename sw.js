@@ -1,5 +1,5 @@
 /* App de viagem China e Tibete, familia Arci. Cache-first total, funciona offline. */
-const CACHE = "china2027-v3";
+const CACHE = "china2027-v4";
 const ARQ = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', e => {

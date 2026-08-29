@@ -19,13 +19,26 @@
 --branco:#fff; --verm:#c0392b; --verde:#1e7a4c;
 --f:'Montserrat',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
 --barra:64px;
+/* tokens que trocam de valor no modo escuro (ver media query abaixo); no
+   claro repetem as cores originais do app, entao nada muda visualmente */
+--fundo:var(--cinza3); --superficie:#fff; --texto:#1c1c1c; --textoForte:#000;
+--borda:#ededed; --bgSuave:var(--bg); --realceCalido:#fff6e8; --realceQuente2:#fdf0ee;
+--roxoTexto:var(--roxo); --roxoTexto2:var(--roxo2); --roxoTexto4:var(--roxo4);
+color-scheme:light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --fundo:#141416; --superficie:#232326; --texto:#ececec; --textoForte:#fff;
+    --borda:#38383c; --bgSuave:#2c2c30; --realceCalido:#3a2f12; --realceQuente2:#3a1e1c;
+    --roxoTexto:#c9a6f5; --roxoTexto2:#b98bf0; --roxoTexto4:#c9a6f5;
+  }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;height:100%}
-body{background:var(--cinza3);font-family:var(--f);font-size:15px;color:#1c1c1c;line-height:1.5;
+body{background:var(--fundo);font-family:var(--f);font-size:15px;color:var(--texto);line-height:1.5;
 overscroll-behavior-y:none;-webkit-text-size-adjust:100%}
 button{font-family:inherit;font-size:inherit;border:none;background:none;cursor:pointer;color:inherit}
-a{color:var(--roxo4)}
+a{color:var(--roxoTexto4)}
 img{max-width:100%;display:block}
 
 /* ---------- topo, agora laranja ---------- */
@@ -42,39 +55,39 @@ background:#fff;border-radius:2px}
 #btnMenu span::before{top:-5px}#btnMenu span::after{top:5px}
 
 main{padding:14px 13px calc(var(--barra) + env(safe-area-inset-bottom) + 22px)}
-.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px}
+.card{background:var(--superficie);border-radius:18px;padding:16px;margin-bottom:12px}
 .card.p0{padding:0;overflow:hidden}
 h2.sec{margin:20px 4px 9px;font-size:12px;font-weight:700;letter-spacing:.07em;
-text-transform:uppercase;color:var(--roxo)}
+text-transform:uppercase;color:var(--roxoTexto)}
 h2.sec:first-child{margin-top:2px}
 
 .alerta{border-radius:16px;padding:14px 15px;margin-bottom:12px;font-size:13.5px;
-border-left:5px solid;background:#fff}
-.alerta.warn{border-left-color:var(--laranja2);background:#fff6e8}
-.alerta.alta{border-left-color:var(--verm);background:#fdf0ee}
-.alerta.info{border-left-color:var(--roxo4);background:var(--bg)}
+border-left:5px solid;background:var(--superficie)}
+.alerta.warn{border-left-color:var(--laranja2);background:var(--realceCalido)}
+.alerta.alta{border-left-color:var(--verm);background:var(--realceQuente2)}
+.alerta.info{border-left-color:var(--roxoTexto4);background:var(--bgSuave)}
 .alerta b{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-margin-bottom:5px;color:var(--roxo)}
+margin-bottom:5px;color:var(--roxoTexto)}
 .alerta.alta b{color:var(--verm)}
 .alerta.warn b{color:var(--laranja3)}
 .alerta .maisinfo{margin-top:9px}
 
-.rot{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #ededed}
+.rot{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--borda)}
 .rot:last-child{border-bottom:none}
 .rot .h{flex:none;width:52px;font-size:12px;font-weight:700;color:var(--laranja3);
 padding-top:1px;font-variant-numeric:tabular-nums}
 .rot .c{flex:1;min-width:0}
-.rot .t{font-size:14.5px;font-weight:600;color:#1c1c1c}
+.rot .t{font-size:14.5px;font-weight:600;color:var(--texto)}
 .rot .d{font-size:12.5px;color:var(--cinza);margin-top:2px}
 
 .linha{display:flex;justify-content:space-between;gap:12px;padding:9px 0;
-border-bottom:1px solid #f0f0f0;font-size:13.5px}
+border-bottom:1px solid var(--borda);font-size:13.5px}
 .linha:last-child{border-bottom:none}
 .linha .k{color:var(--cinza);flex:1;min-width:0}
 .linha .v{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;flex:none}
 
 .chip{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-padding:3px 8px;border-radius:7px;background:var(--bg);color:var(--roxo);white-space:nowrap}
+padding:3px 8px;border-radius:7px;background:var(--bgSuave);color:var(--roxoTexto);white-space:nowrap}
 .chip.ok{background:var(--verde);color:#fff}
 .chip.pend{background:var(--laranja3);color:#fff}
 .chip.risco{background:var(--verm);color:#fff}
@@ -84,53 +97,53 @@ padding:3px 8px;border-radius:7px;background:var(--bg);color:var(--roxo);white-s
 .btn{display:block;width:100%;padding:13px;border-radius:12px;background:var(--laranja3);
 color:#fff;font-weight:700;font-size:14px;text-align:center}
 .btn.sec{background:var(--roxo3)}
-.btn.gh{background:var(--bg);color:var(--roxo)}
+.btn.gh{background:var(--bgSuave);color:var(--roxoTexto)}
 
 /* ---------- barra de acoes rapidas ---------- */
 .acoes{display:flex;flex-wrap:nowrap;gap:7px;margin-top:10px;overflow-x:auto;padding-bottom:1px}
 .acoes::-webkit-scrollbar{height:0;background:transparent}
 /* so o icone fica visivel; o texto continua no DOM (acessibilidade) mas com font-size:0 */
 .acao{display:inline-flex;flex:none;align-items:center;justify-content:center;gap:0;padding:11px;
-min-width:40px;border-radius:11px;font-size:0;font-weight:700;background:var(--bg);
-color:var(--roxo);border:1px solid #e2e2e2}
+min-width:40px;border-radius:11px;font-size:0;font-weight:700;background:var(--bgSuave);
+color:var(--roxoTexto);border:1px solid var(--borda)}
 .acao.forte{background:var(--roxo);color:#fff;border-color:var(--roxo)}
 .acao .em{font-size:17px;line-height:1}
 .acao:active{opacity:.7}
 
 input[type=text],input[type=password],input[type=search],input[type=number]{width:100%;
 padding:12px 13px;border-radius:12px;border:1.5px solid var(--cinza3);font-family:inherit;
-font-size:15px;background:#fff}
+font-size:15px;background:var(--superficie);color:var(--texto)}
 input:focus{outline:none;border-color:var(--laranja3)}
 
-.diacard{display:flex;gap:12px;align-items:center;padding:13px 15px;border-bottom:1px solid #ededed}
+.diacard{display:flex;gap:12px;align-items:center;padding:13px 15px;border-bottom:1px solid var(--borda)}
 .diacard:last-child{border-bottom:none}
 .diacard .dt{flex:none;width:50px;text-align:center}
-.diacard .dt .n{font-size:19px;font-weight:700;color:var(--roxo);line-height:1}
+.diacard .dt .n{font-size:19px;font-weight:700;color:var(--roxoTexto);line-height:1}
 .diacard .dt .m{font-size:9.5px;font-weight:700;text-transform:uppercase;color:var(--cinza2);
 letter-spacing:.05em;margin-top:2px}
 .diacard .c{flex:1;min-width:0}
 .diacard .cid{font-size:14.5px;font-weight:700}
 .diacard .ti{font-size:12.5px;color:var(--cinza);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.diacard.hoje{background:#fff6e8}
+.diacard.hoje{background:var(--realceCalido)}
 .diacard.hoje .dt .n{color:var(--laranja3)}
 .diacard .ind{flex:none;width:9px;height:9px;border-radius:50%;background:var(--cinza3)}
 .diacard .ind.alta{background:var(--verm)}
 .diacard .ind.warn{background:var(--laranja3)}
 
-.frase{padding:13px 0;border-bottom:1px solid #f0f0f0}
+.frase{padding:13px 0;border-bottom:1px solid var(--borda)}
 .frase:last-child{border-bottom:none}
 .frase .pt{font-size:13px;color:var(--cinza);margin-bottom:3px}
-.frase .hz{font-size:22px;font-weight:600;line-height:1.35;color:#111}
-.frase .py{font-size:13px;color:var(--roxo4);font-style:italic;margin-top:2px}
+.frase .hz{font-size:22px;font-weight:600;line-height:1.35;color:var(--textoForte)}
+.frase .py{font-size:13px;color:var(--roxoTexto4);font-style:italic;margin-top:2px}
 
 /* ---------- modo mostrar ---------- */
-#show{position:fixed;inset:0;z-index:100;background:#fff;display:none;flex-direction:column;
+#show{position:fixed;inset:0;z-index:100;background:var(--superficie);display:none;flex-direction:column;
 padding:20px}
 #show.on{display:flex}
 #show .in{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
 gap:16px;text-align:center}
-#show .big{font-size:clamp(30px,9vw,58px);font-weight:700;line-height:1.3;color:#000;word-break:break-word}
-#show .mid{font-size:clamp(17px,4.5vw,24px);color:var(--roxo4);font-style:italic}
+#show .big{font-size:clamp(30px,9vw,58px);font-weight:700;line-height:1.3;color:var(--textoForte);word-break:break-word}
+#show .mid{font-size:clamp(17px,4.5vw,24px);color:var(--roxoTexto4);font-style:italic}
 #show .sm{font-size:14px;color:var(--cinza)}
 #show .rod{display:flex;gap:9px}
 #show .rod button{flex:1;padding:15px;border-radius:14px;font-weight:700;font-size:14px}
@@ -147,29 +160,29 @@ justify-content:center;gap:3px;color:#c9b6dd;font-size:10px;font-weight:700;lett
 
 #menu{position:fixed;inset:0;z-index:90;background:rgba(20,4,38,.55);display:none}
 #menu.on{display:block}
-#menu .painel{position:absolute;right:0;top:0;bottom:0;width:min(78%,300px);background:#fff;
+#menu .painel{position:absolute;right:0;top:0;bottom:0;width:min(78%,300px);background:var(--superficie);
 padding:calc(env(safe-area-inset-top) + 18px) 0 20px;overflow:auto}
 #menu .painel h3{margin:0 20px 12px;font-size:11px;font-weight:700;letter-spacing:.07em;
 text-transform:uppercase;color:var(--cinza2)}
 #menu .painel button{display:block;width:100%;text-align:left;padding:14px 20px;font-size:15px;
-font-weight:600;color:var(--roxo)}
-#menu .painel button:active{background:var(--bg)}
-#menu .painel hr{border:none;border-top:1px solid #eee;margin:12px 20px}
+font-weight:600;color:var(--roxoTexto)}
+#menu .painel button:active{background:var(--bgSuave)}
+#menu .painel hr{border:none;border-top:1px solid var(--borda);margin:12px 20px}
 
 /* ---------- confirmacao de saida ---------- */
 #sair{position:fixed;inset:0;z-index:120;background:rgba(20,4,38,.62);display:none;
 align-items:center;justify-content:center;padding:26px}
 #sair.on{display:flex}
-#sair .cx{background:#fff;border-radius:22px;padding:26px 22px;max-width:340px;width:100%;text-align:center}
-#sair h3{margin:0 0 8px;font-size:18px;font-weight:700;color:var(--roxo)}
+#sair .cx{background:var(--superficie);border-radius:22px;padding:26px 22px;max-width:340px;width:100%;text-align:center}
+#sair h3{margin:0 0 8px;font-size:18px;font-weight:700;color:var(--roxoTexto)}
 #sair p{margin:0 0 20px;font-size:13.5px;color:var(--cinza)}
 #sair .bts{display:flex;gap:9px}
 #sair .bts button{flex:1;padding:14px;border-radius:13px;font-weight:700;font-size:14px}
 #sair .fica{background:var(--laranja3);color:#fff}
-#sair .vai{background:var(--bg);color:var(--roxo)}
+#sair .vai{background:var(--bgSuave);color:var(--roxoTexto)}
 
 /* ---------- checklist ---------- */
-.tarefa{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #ededed}
+.tarefa{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--borda)}
 .tarefa:last-child{border-bottom:none}
 .tarefa .bx{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid var(--cinza3);
 display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;
@@ -179,11 +192,11 @@ font-weight:700;margin-top:1px}
 .tarefa .c{flex:1;min-width:0}
 .tarefa .t{font-size:13.5px;font-weight:600}
 .tarefa .d{font-size:11.5px;color:var(--cinza);margin-top:2px}
-.progresso{height:9px;border-radius:6px;background:var(--bg);overflow:hidden;margin:10px 0 4px}
+.progresso{height:9px;border-radius:6px;background:var(--bgSuave);overflow:hidden;margin:10px 0 4px}
 .progresso i{display:block;height:100%;background:var(--laranja3)}
 
 .vazio{text-align:center;padding:36px 20px;color:var(--cinza2);font-size:14px}
-.rodape{text-align:center;font-size:11px;color:var(--roxo2);padding:14px 10px 4px;opacity:.75}
+.rodape{text-align:center;font-size:11px;color:var(--roxoTexto2);padding:14px 10px 4px;opacity:.75}
 #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--barra) + 26px);
 z-index:130;background:var(--roxo);color:#fff;padding:11px 18px;border-radius:12px;font-size:13px;
 font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:86%;text-align:center}
@@ -602,7 +615,7 @@ function vDia(forcado,ehHoje){
 
   let h='';
   h+=`<div class="card"><div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza2)">${esc(d.semana)}, ${esc(d.data)}</div>
-      <div style="font-size:21px;font-weight:700;color:var(--roxo);margin-top:3px">${esc(d.titulo)}</div>
+      <div style="font-size:21px;font-weight:700;color:var(--roxoTexto);margin-top:3px">${esc(d.titulo)}</div>
       <div style="font-size:13px;color:var(--cinza);margin-top:3px">${esc(d.cidade)}${d.cidade_cn?' · '+esc(d.cidade_cn):''}${d.altitude?' · '+d.altitude.toLocaleString('pt-BR')+' m':''}</div>
       ${acoesEndereco({cn:d.cidade_cn, pt:d.cidade, cidade:d.cidade, rotulo:'Mostrar cidade',
         extra:`<button class="acao" onclick="ics(D.dias[${i}])"><span class="em">📅</span>Salvar na agenda</button>`})}
@@ -621,7 +634,7 @@ function vDia(forcado,ehHoje){
   if(hot){
     h+=`<h2 class="sec">Onde vocês dormem</h2><div class="card">
       <div style="font-size:15px;font-weight:700">${esc(hot.nome)}</div>
-      ${hot.nome_cn?`<div style="font-size:15px;color:var(--roxo4);margin-top:2px">${esc(hot.nome_cn)}</div>`:''}
+      ${hot.nome_cn?`<div style="font-size:15px;color:var(--roxoTexto4);margin-top:2px">${esc(hot.nome_cn)}</div>`:''}
       ${hot.endereco?`<div style="font-size:13px;color:var(--cinza);margin-top:5px">${esc(hot.endereco)}</div>`:''}
       ${hot.endereco_cn?`<div style="font-size:14px;margin-top:3px">${esc(hot.endereco_cn)}</div>`:''}
       <div style="margin-top:8px"><span class="chip ${hot.status==='indicado'?'pend':(hot.status==='via agencia'?'ag':'est')}">${esc(rot(hot.status))}</span></div>
@@ -736,7 +749,7 @@ function vLog(){
           <div style="font-size:15px;font-weight:700;margin-top:2px">${esc(x.nome)}</div>
         </div><span class="chip ${st}">${esc(rot(x.status))}</span>
       </div>
-      ${x.nome_cn?`<div style="font-size:15px;color:var(--roxo4);margin-top:3px">${esc(x.nome_cn)}</div>`:''}
+      ${x.nome_cn?`<div style="font-size:15px;color:var(--roxoTexto4);margin-top:3px">${esc(x.nome_cn)}</div>`:''}
       <div class="linha"><span class="k">Entrada</span><span class="v">${esc(x.checkin)}</span></div>
       <div class="linha"><span class="k">Saída</span><span class="v">${esc(x.checkout)}</span></div>
       <div class="linha"><span class="k">Noites</span><span class="v">${x.noites}</span></div>
@@ -839,7 +852,7 @@ function docCardHtml(x, imagensMap){
     ${x.obs?`<div style="font-size:12.5px;color:var(--cinza);margin-top:9px">${esc(x.obs)}</div>`:''}
     ${x.numero?`<div class="acoes"><button class="acao" onclick="copiar(${J(x.numero)})"><span class="em">⧉</span>Copiar número</button>
       <button class="acao" onclick="mostrar(${J(x.numero)},${J(x.viajante||'')},${J(x.validade?'Válido até '+x.validade:'')})"><span class="em">⛶</span>Mostrar grande</button></div>`:''}
-    ${x.imagem&&imagensMap&&imagensMap[x.imagem]?`<div style="margin-top:11px;border-radius:12px;overflow:hidden;border:1px solid #e4e4e4"><img src="${imagensMap[x.imagem]}" alt="Documento"></div>
+    ${x.imagem&&imagensMap&&imagensMap[x.imagem]?`<div style="margin-top:11px;border-radius:12px;overflow:hidden;border:1px solid var(--borda)"><img src="${imagensMap[x.imagem]}" alt="Documento"></div>
       <button class="btn sec" style="margin-top:9px" onclick="verImagem('${x.imagem}')">Ver em tela cheia</button>`:''}
   </div>`;
 }
@@ -859,7 +872,7 @@ function vDocs(){
   let h=`<div style="display:flex;gap:7px;margin-bottom:12px">`;
   FAMILIAS_DOC.forEach(f=>{
     h+=`<button onclick="famDoc=${J(f.k)};render()" style="flex:1;padding:11px 8px;border-radius:11px;
-      font-size:12.5px;font-weight:700;${f.k===famDoc?'background:var(--roxo);color:#fff;border:1px solid var(--roxo)':'background:#fff;color:var(--roxo);border:1px solid #e2e2e2'}">${esc(f.rot)}</button>`;
+      font-size:12.5px;font-weight:700;${f.k===famDoc?'background:var(--roxo);color:#fff;border:1px solid var(--roxo)':'background:var(--superficie);color:var(--roxoTexto);border:1px solid var(--borda)'}">${esc(f.rot)}</button>`;
   });
   h+='</div>';
 
@@ -867,7 +880,7 @@ function vDocs(){
   $('#tSub').textContent=abertos.length+' documentos de acesso rápido';
   if(!abertos.length){
     h+=`<div class="card">
-      <div style="font-size:15px;font-weight:700;color:var(--roxo)">Ainda sem documentos aqui</div>
+      <div style="font-size:15px;font-weight:700;color:var(--roxoTexto)">Ainda sem documentos aqui</div>
       <div style="font-size:13px;color:var(--cinza);margin-top:8px">
         Quando os documentos desta família forem adicionados ao aplicativo, eles aparecem nesta aba.</div>
     </div>`;
@@ -879,7 +892,7 @@ function vDocs(){
   if(!DOCS){
     const podeBio=!!localStorage.getItem(CHAVE_CRED);
     h+=`<div class="card">
-      <div style="font-size:15px;font-weight:700;color:var(--roxo)">Protegidos por senha</div>
+      <div style="font-size:15px;font-weight:700;color:var(--roxoTexto)">Protegidos por senha</div>
       <div style="font-size:13px;color:var(--cinza);margin:8px 0 14px">
         Só os passaportes ficam criptografados (AES de 256 bits). Os outros documentos, acima, ficam
         sempre visíveis, para acesso rápido na hora de entrar em lugares.</div>
@@ -892,7 +905,7 @@ function vDocs(){
     </div>`;
   } else if(ofertaBiometria){
     h+=`<div class="card">
-      <div style="font-size:16px;font-weight:700;color:var(--roxo)">Usar biometria da próxima vez?</div>
+      <div style="font-size:16px;font-weight:700;color:var(--roxoTexto)">Usar biometria da próxima vez?</div>
       <div style="font-size:13px;color:var(--cinza);margin:10px 0 14px">
         Ativando, neste aparelho a senha não é mais pedida: basta a digital ou o Face ID do celular.
         Importante saber: isso é uma trava de conveniência, não uma criptografia amarrada à biometria.
@@ -936,7 +949,7 @@ function vChines(){
   if(!catAtual || !cats.includes(catAtual)) catAtual=cats[0];
   let h=`<div style="display:flex;gap:7px;overflow-x:auto;padding:2px 2px 10px">`;
   cats.forEach(c=>{
-    h+=`<button onclick="catAtual=${J(c)};render()" style="flex:none;padding:9px 14px;border-radius:11px;font-size:12.5px;font-weight:700;white-space:nowrap;${c===catAtual?'background:var(--laranja3);color:#fff':'background:#fff;color:var(--roxo)'}">${esc(c)}</button>`;
+    h+=`<button onclick="catAtual=${J(c)};render()" style="flex:none;padding:9px 14px;border-radius:11px;font-size:12.5px;font-weight:700;white-space:nowrap;${c===catAtual?'background:var(--laranja3);color:#fff':'background:var(--superficie);color:var(--roxoTexto)'}">${esc(c)}</button>`;
   });
   h+='</div><div class="card">';
   D.frases.filter(f=>f.categoria===catAtual).sort((a,b)=>a.prioridade-b.prioridade).forEach(f=>{
@@ -970,7 +983,7 @@ function vOrc(){
 
   let h=`<div class="card" style="text-align:center">
     <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza2)">Total previsto, família</div>
-    <div style="font-size:31px;font-weight:700;color:var(--roxo);line-height:1.15;margin:5px 0">${brl(total)}</div>
+    <div style="font-size:31px;font-weight:700;color:var(--roxoTexto);line-height:1.15;margin:5px 0">${brl(total)}</div>
     <div style="font-size:13px;color:var(--cinza)">${brl(total/4)} por pessoa</div>
   </div>
   <div class="alerta warn"><b>Falta o maior item</b>
@@ -979,7 +992,7 @@ function vOrc(){
   h+='<h2 class="sec">Antes de viajar</h2><div class="card">';
   pre.forEach(o=>{
     const v = o.moeda==='BRL'? val(o) : val(o)*CAMBIO;
-    h+=`<div style="padding:11px 0;border-bottom:1px solid #f0f0f0">
+    h+=`<div style="padding:11px 0;border-bottom:1px solid var(--borda)">
       <div style="display:flex;justify-content:space-between;gap:10px">
         <span style="font-size:13.5px;font-weight:600;min-width:0">${esc(o.descricao)}</span>
         <span style="font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums">${o.fonte==='a cotar'?'a cotar':brl(v)}</span></div>
@@ -999,7 +1012,7 @@ function vOrc(){
     const v = o.moeda==='BRL'? val(o) : val(o)*CAMBIO;
     const periodo = (o.data_fim && o.data_fim!==o.data_inicio)
       ? o.data_inicio.slice(0,5)+' a '+o.data_fim.slice(0,5) : (o.data_inicio||'').slice(0,5);
-    h+=`<div style="padding:11px 0;border-bottom:1px solid #f0f0f0">
+    h+=`<div style="padding:11px 0;border-bottom:1px solid var(--borda)">
       <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
         <span style="font-size:11.5px;font-weight:700;color:var(--laranja3);letter-spacing:.03em;white-space:nowrap">${esc(periodo)}${o.cidade?' · '+esc(o.cidade):''}</span>
         <span style="font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:13.5px">${brl(v)}</span></div>
@@ -1040,7 +1053,7 @@ function vAlt(){
   [...new Set(D.altitude.map(a=>a.contexto))].forEach(c=>{
     h+=`<h2 class="sec">${esc(c)}</h2>`;
     D.altitude.filter(a=>a.contexto===c).forEach(a=>{
-      h+=`<div class="card"><div style="font-size:15px;font-weight:700;color:var(--roxo)">${esc(a.tema)}</div>
+      h+=`<div class="card"><div style="font-size:15px;font-weight:700;color:var(--roxoTexto)">${esc(a.tema)}</div>
         <div style="font-size:13.5px;margin-top:7px">${esc(a.texto)}</div></div>`;
     });
   });
@@ -1066,7 +1079,7 @@ function vPrat(){
   [...new Set(D.pratico.map(p=>p.categoria))].forEach(c=>{
     h+=`<h2 class="sec">${esc(c)}</h2>`;
     D.pratico.filter(p=>p.categoria===c).forEach(p=>{
-      h+=`<div class="card"><div style="font-size:15px;font-weight:700;color:var(--roxo)">${esc(p.titulo)}</div>
+      h+=`<div class="card"><div style="font-size:15px;font-weight:700;color:var(--roxoTexto)">${esc(p.titulo)}</div>
         <div style="font-size:13.5px;margin-top:7px">${esc(p.texto)}</div></div>`;
     });
   });
@@ -1092,9 +1105,9 @@ function vCont(){
     h+=`<h2 class="sec">${esc(f)}</h2><div class="card">`;
     D.contatos.filter(c=>c.funcao===f).forEach(c=>{
       const falta = c.telefone==='a confirmar'||c.telefone==='a definir';
-      h+=`<div style="padding:11px 0;border-bottom:1px solid #f0f0f0">
+      h+=`<div style="padding:11px 0;border-bottom:1px solid var(--borda)">
         <div style="font-size:14.5px;font-weight:600">${esc(c.nome)}</div>
-        <div style="font-size:17px;font-weight:700;color:${falta?'var(--verm)':'var(--roxo4)'};margin-top:2px">${esc(c.telefone)}</div>
+        <div style="font-size:17px;font-weight:700;color:${falta?'var(--verm)':'var(--roxoTexto4)'};margin-top:2px">${esc(c.telefone)}</div>
         ${c.cidade?`<div style="font-size:12px;color:var(--cinza)">${esc(c.cidade)}</div>`:''}
         ${c.obs?`<div style="font-size:12px;color:var(--cinza);margin-top:4px">${esc(c.obs)}</div>`:''}
         ${falta?'':`<div class="acoes"><a class="acao forte" href="tel:${esc(c.telefone.replace(/\s/g,''))}"><span class="em">☎</span>Ligar</a>
@@ -1120,13 +1133,13 @@ function vCheck(){
   let h=`<div style="display:flex;gap:7px;margin-bottom:12px">`;
   FAMILIAS_DOC.forEach(fam=>{
     h+=`<button onclick="famCheck=${J(fam.k)};render()" style="flex:1;padding:11px 8px;border-radius:11px;
-      font-size:12.5px;font-weight:700;${fam.k===famCheck?'background:var(--roxo);color:#fff;border:1px solid var(--roxo)':'background:#fff;color:var(--roxo);border:1px solid #e2e2e2'}">${esc(fam.rot)}</button>`;
+      font-size:12.5px;font-weight:700;${fam.k===famCheck?'background:var(--roxo);color:#fff;border:1px solid var(--roxo)':'background:var(--superficie);color:var(--roxoTexto);border:1px solid var(--borda)'}">${esc(fam.rot)}</button>`;
   });
   h+='</div>';
 
   if(!total){
     h+=`<div class="card">
-      <div style="font-size:15px;font-weight:700;color:var(--roxo)">Ainda sem checklist aqui</div>
+      <div style="font-size:15px;font-weight:700;color:var(--roxoTexto)">Ainda sem checklist aqui</div>
       <div style="font-size:13px;color:var(--cinza);margin-top:8px">
         Quando as providências desta família forem definidas, elas aparecem nesta aba.</div>
     </div>`;
@@ -1135,7 +1148,7 @@ function vCheck(){
 
   h+=`<div class="card">
     <div style="display:flex;justify-content:space-between;align-items:baseline">
-      <span style="font-size:13px;font-weight:700;color:var(--roxo)">Progresso</span>
+      <span style="font-size:13px;font-weight:700;color:var(--roxoTexto)">Progresso</span>
       <span style="font-size:20px;font-weight:700;color:var(--laranja3)">${pct}%</span></div>
     <div class="progresso"><i style="width:${pct}%"></i></div>
     <div style="font-size:11.5px;color:var(--cinza2)">${prontos} de ${total} providências concluídas.
@@ -1171,7 +1184,7 @@ function vConv(){
     <input type="number" inputmode="decimal" id="cv" value="${convCNY}" oninput="convCNY=this.value;$('#cvOut').textContent=brl((parseFloat(this.value)||0)*CAMBIO)">
     <div style="text-align:center;margin:20px 0 6px">
       <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--cinza2)">Equivale a</div>
-      <div id="cvOut" style="font-size:34px;font-weight:700;color:var(--roxo);line-height:1.2">${brl(convCNY*CAMBIO)}</div>
+      <div id="cvOut" style="font-size:34px;font-weight:700;color:var(--roxoTexto);line-height:1.2">${brl(convCNY*CAMBIO)}</div>
     </div>
     <div class="linha"><span class="k">Câmbio usado</span><span class="v">1 CNY = ${brl(CAMBIO)}</span></div>
   </div>
@@ -1215,7 +1228,7 @@ function vSobre(){
   $('#tTitulo').textContent='Sobre';
   $('#tSub').textContent='Versão 3, 29/08/2026';
   return `<div class="card">
-    <div style="font-size:16px;font-weight:700;color:var(--roxo)">China e Tibete 2026/2027</div>
+    <div style="font-size:16px;font-weight:700;color:var(--roxoTexto)">China e Tibete 2026/2027</div>
     <div style="font-size:13.5px;margin-top:8px">Aplicativo offline da família Arci. Depois de aberto
     uma vez, funciona sem internet, inclusive em modo avião.</div>
     <div class="linha"><span class="k">Viajantes</span><span class="v">4</span></div>
