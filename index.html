@@ -264,6 +264,7 @@ font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s;max-width:8
     <hr>
     <h3>Ferramentas</h3>
     <button onclick="ir('busca')">Buscar</button>
+    <button onclick="forcarAtualizacao()">Atualizar app (forçar)</button>
     <button onclick="ir('sobre')">Sobre este app</button>
   </div>
 </div>
@@ -505,6 +506,24 @@ document.querySelectorAll('#barra button').forEach(b=>{
 });
 $('#btnMenu').onclick=()=>{ $('#menu').classList.add('on'); empilhar(); };
 function fecharMenu(){ $('#menu').classList.remove('on'); }
+
+/* forca buscar a versao mais nova: tira o service worker antigo, apaga o cache
+   e recarrega. Usa isso quando uma mudanca publicada nao aparece no aparelho. */
+async function forcarAtualizacao(){
+  fecharMenu();
+  toast('Atualizando...');
+  try{
+    if('serviceWorker' in navigator){
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for(const r of regs) await r.unregister();
+    }
+    if('caches' in window){
+      const nomes = await caches.keys();
+      for(const n of nomes) await caches.delete(n);
+    }
+  }catch(e){}
+  location.reload();
+}
 
 window.addEventListener('popstate', e => {
   if(saindo) return;
